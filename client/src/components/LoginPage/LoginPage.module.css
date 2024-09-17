@@ -1,0 +1,20 @@
+.wrap{
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.formField{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: darksalmon;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+#nameField{
+  padding: 5px 10px;
+}

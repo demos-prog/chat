@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { Message, SOCKET_URI } from '../../constants';
+import { useNavigate } from 'react-router-dom';
+import css from './Chat.module.css';
 
 const socket = io(SOCKET_URI);
 
@@ -8,7 +10,13 @@ const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
 
+  const navigate = useNavigate()
+  const userName = sessionStorage.getItem('userName');
+
   useEffect(() => {
+    if (!userName) navigate('/')
+    socket.emit('requestAllMessages');
+
     socket.on('message', (data) => {
       setMessages((prevMessages) => [...prevMessages, data]);
     });
@@ -20,18 +28,18 @@ const Chat = () => {
       socket.off('message');
       socket.off('allMessages');
     };
-  }, []);
+  }, [navigate, userName]);
 
   const sendMessage = () => {
     if (input) {
-      socket.emit('message', { author: 'User1', message: input });
+      socket.emit('message', { author: userName, message: input });
       setInput('');
     }
   };
 
   return (
     <div>
-      <div id="messages" style={{ border: '1px solid #ccc', height: '300px', overflowY: 'scroll', marginBottom: '10px' }}>
+      <div id={css.messages}>
         {messages.map((msg, index) => (
           <div key={index} className="message">
             {msg.author}: {msg.message}
