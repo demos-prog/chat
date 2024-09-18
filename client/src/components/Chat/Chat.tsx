@@ -3,6 +3,7 @@ import { io } from 'socket.io-client';
 import { Message, SOCKET_URI } from '../../constants';
 import { useNavigate } from 'react-router-dom';
 import css from './Chat.module.css';
+import { transformDate } from '../../helpers/transformDate';
 
 const socket = io(SOCKET_URI);
 
@@ -30,7 +31,9 @@ const Chat = () => {
     };
   }, [navigate, userName]);
 
-  const sendMessage = () => {
+
+  const sendMessage = (e: { preventDefault: () => void; }) => {
+    e.preventDefault()
     if (input) {
       socket.emit('message', { author: userName, message: input });
       setInput('');
@@ -41,18 +44,24 @@ const Chat = () => {
     <div>
       <div id={css.messages}>
         {messages.map((msg, index) => (
-          <div key={index} className="message">
-            {msg.author}: {msg.message}
+          <div key={index} className={css.message}>
+            <div>{msg.author}</div> 
+            <p>{msg.message}</p>
+            <span>{transformDate(msg.createdAt)}</span>
           </div>
         ))}
       </div>
-      <input
-        type="text"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Type your message here..."
-      />
-      <button onClick={sendMessage}>Send</button>
+
+      <form onSubmit={sendMessage}>
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Type your message here..."
+        />
+        <button>Send</button>
+      </form>
+      <span>{userName}</span>
     </div>
   );
 };
