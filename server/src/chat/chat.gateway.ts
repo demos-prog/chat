@@ -34,13 +34,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('requestAllMessages')
   async handleRequestAllMessages(client: Socket) {
-      const allMessages = await this.messageService.findAll();
-      client.emit('allMessages', allMessages);
+    const allMessages = await this.messageService.findAll();
+    client.emit('allMessages', allMessages);
   }
 
   @SubscribeMessage('message')
   async handleMessage(client: Socket, payload: CreateMessageDto) {
     await this.messageService.create(payload)
-    this.server.emit('message', payload);
+    this.server.emit('message', { ...payload, createdAt: new Date() });
   }
 }

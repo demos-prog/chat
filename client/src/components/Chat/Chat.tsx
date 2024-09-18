@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 import { Message, SOCKET_URI } from '../../constants';
 import { useNavigate } from 'react-router-dom';
-import css from './Chat.module.css';
 import { transformDate } from '../../helpers/transformDate';
+import sendIcon from '../../assets/send-icon.png';
+import css from './Chat.module.css';
 
 const socket = io(SOCKET_URI);
 
@@ -11,8 +12,9 @@ const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const userName = sessionStorage.getItem('userName');
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!userName) navigate('/')
@@ -31,37 +33,55 @@ const Chat = () => {
     };
   }, [navigate, userName]);
 
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   const sendMessage = (e: { preventDefault: () => void; }) => {
     e.preventDefault()
-    if (input) {
+    if (input !== '') {
       socket.emit('message', { author: userName, message: input });
       setInput('');
     }
   };
-
+  
   return (
-    <div>
-      <div id={css.messages}>
-        {messages.map((msg, index) => (
-          <div key={index} className={css.message}>
-            <div>{msg.author}</div> 
-            <p>{msg.message}</p>
-            <span>{transformDate(msg.createdAt)}</span>
-          </div>
-        ))}
+    <div id={css.container}>
+      <div id={css.header}>
+        <h1>Chat</h1>
+        <span>Welcome, {userName}</span>
       </div>
 
-      <form onSubmit={sendMessage}>
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Type your message here..."
+      {messages.length > 0 ? (
+        <div id={css.messages}>
+          {messages.map((msg, index) => (
+            <div key={index} className={css.message}>
+              <div>{msg.author}</div>
+              <p>{msg.message}</p>
+              <span>{transformDate(msg.createdAt)}</span>
+            </div>
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
+      ) : ('There is no any message yet')}
+
+      <div id={css.inputField}>
+        <form id={css.form} onSubmit={sendMessage}>
+          <input
+            id={css.input}
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type your message here..."
+          />
+        </form>
+        <img
+          id={css.sendIcon}
+          src={sendIcon}
+          alt="send"
+          onClick={sendMessage}
         />
-        <button>Send</button>
-      </form>
-      <span>{userName}</span>
+      </div>
     </div>
   );
 };

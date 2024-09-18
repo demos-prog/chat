@@ -1,10 +1,75 @@
-#messages {
-  border: 1px solid #ccc;
-  height: 300px;
-  overflow-y: scroll;
-  margin-bottom: 10px;
+:root {
+  --sky-blue: #87CEEB;
+  --powered-blue: #CCCCFF;
 }
 
-.message{
+#container {
+  min-height: 100lvh;
+  padding: 20px;
+}
+
+#header {
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: var(--sky-blue);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#header h1 {
+  width: min-content;
+}
+
+#messages {
+  border-radius: 5px;
+  border: 1px solid var(--sky-blue);
+  padding: 10px;
+  max-height: calc(100dvh - 150px);
+  overflow-y: scroll;
+  margin-top: 20px;
+  margin-bottom: 10px;
+
+}
+
+::-webkit-scrollbar {
+  background-color: transparent;
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--sky-blue);
+  border-radius: 5px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+.message {
   margin-top: 15px;
+}
+
+#form {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+#inputField {
+  gap: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#input {
+  border: 1px solid var(--sky-blue);
+  padding: 10px 20px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+#sendIcon {
+  height: 30px;
+  cursor: pointer;
+  filter: brightness(0) saturate(100%) invert(50%) sepia(100%) saturate(200%) hue-rotate(200deg) brightness(90%);
 }
