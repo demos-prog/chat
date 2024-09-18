@@ -44,7 +44,7 @@ const Chat = () => {
       setInput('');
     }
   };
-  
+
   return (
     <div id={css.container}>
       <div id={css.header}>
@@ -55,15 +55,29 @@ const Chat = () => {
       {messages.length > 0 ? (
         <div id={css.messages}>
           {messages.map((msg, index) => (
-            <div key={index} className={css.message}>
-              <div>{msg.author}</div>
-              <p>{msg.message}</p>
-              <span>{transformDate(msg.createdAt)}</span>
-            </div>
+            msg.author === userName ? (
+              <div key={index} className={css.ownMessage}>
+                <div className={css.ownMsgHeader}>
+                  <span>{msg.message}</span>
+                  <span className={css.date}>{transformDate(msg.createdAt)}</span>
+                </div>
+              </div>
+            ) : (
+              <div key={index} className={css.message}>
+                <div className={css.msgHeader}>
+                  {msg.author}
+                  <div className={css.date}>{transformDate(msg.createdAt)}</div>
+                </div>
+                <p>{msg.message}</p>
+              </div>
+            )
           ))}
           <div ref={messagesEndRef} />
         </div>
-      ) : ('There is no any message yet')}
+      ) : (
+        <div className={css.noMsg}>There is no any messages yet.</div>
+      )
+      }
 
       <div id={css.inputField}>
         <form id={css.form} onSubmit={sendMessage}>
@@ -82,7 +96,7 @@ const Chat = () => {
           onClick={sendMessage}
         />
       </div>
-    </div>
+    </div >
   );
 };
 
