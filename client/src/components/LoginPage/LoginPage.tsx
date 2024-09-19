@@ -19,7 +19,11 @@ const LoginPage: React.FC = () => {
   return (
     <div className={css.wrap}>
       <form onSubmit={handleSubmit} className={css.formField}>
-        <span className={css.note}>Please enter your nickname and enter the chat room</span>
+        <p>
+          <span className={css.note}>Please write your nickname </span>
+          <br />
+          <span className={css.note}>and enter the chat room</span>
+        </p>
         <input
           placeholder='Enter your nickname'
           required
