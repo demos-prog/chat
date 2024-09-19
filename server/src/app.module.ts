@@ -15,6 +15,7 @@ import { ChatModule } from './chat/chat.module';
     }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
+      dialectModule: require('pg'),
       autoLoadModels: true,
       synchronize: true,
       host: process.env.DB_HOST,
