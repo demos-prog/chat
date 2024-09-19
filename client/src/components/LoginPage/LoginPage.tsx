@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import css from './LoginPage.module.css'
 import { useNavigate } from 'react-router-dom';
+import css from './LoginPage.module.css'
 
 
 const LoginPage: React.FC = () => {
@@ -19,7 +19,9 @@ const LoginPage: React.FC = () => {
   return (
     <div className={css.wrap}>
       <form onSubmit={handleSubmit} className={css.formField}>
+        <span className={css.note}>Please enter your nickname and enter the chat room</span>
         <input
+          placeholder='Enter your nickname'
           required
           type="text"
           name="name"

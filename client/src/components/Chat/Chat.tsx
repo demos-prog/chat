@@ -45,59 +45,69 @@ const Chat = () => {
     }
   };
 
+  const handleLogOut = () => {
+    sessionStorage.removeItem('userName');
+    navigate('/');
+  }
+
   return (
-    <div id={css.container}>
-      <div>
-        <div id={css.header}>
-          <h1>Chat</h1>
-          <span>Welcome, {userName}</span>
+    <div className={css.page}>
+      <div id={css.container}>
+        <div>
+          <div id={css.header}>
+            <h1>Chat</h1>
+            <div id={css.headAction}>
+              <span>Welcome, {userName}</span>
+              <button className={css.btn} onClick={handleLogOut}>Log out</button>
+            </div>
+          </div>
+
+          {messages.length > 0 ? (
+            <div id={css.messages}>
+              {messages.map((msg, index) => (
+                msg.author === userName ? (
+                  <div key={index} className={css.ownMessage}>
+                    <div className={css.ownMsgHeader}>
+                      <span>{msg.message}</span>
+                      <span className={css.date}>{transformDate(msg.createdAt)}</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div key={index} className={css.message}>
+                    <div className={css.msgHeader}>
+                      {msg.author}
+                      <div className={css.date}>{transformDate(msg.createdAt)}</div>
+                    </div>
+                    <p>{msg.message}</p>
+                  </div>
+                )
+              ))}
+              <div ref={messagesEndRef} />
+            </div>
+          ) : (
+            <div className={css.noMsg}>There is no any messages yet.</div>
+          )}
         </div>
 
-        {messages.length > 0 ? (
-          <div id={css.messages}>
-            {messages.map((msg, index) => (
-              msg.author === userName ? (
-                <div key={index} className={css.ownMessage}>
-                  <div className={css.ownMsgHeader}>
-                    <span>{msg.message}</span>
-                    <span className={css.date}>{transformDate(msg.createdAt)}</span>
-                  </div>
-                </div>
-              ) : (
-                <div key={index} className={css.message}>
-                  <div className={css.msgHeader}>
-                    {msg.author}
-                    <div className={css.date}>{transformDate(msg.createdAt)}</div>
-                  </div>
-                  <p>{msg.message}</p>
-                </div>
-              )
-            ))}
-            <div ref={messagesEndRef} />
-          </div>
-        ) : (
-          <div className={css.noMsg}>There is no any messages yet.</div>
-        )}
-      </div>
-
-      <div id={css.inputField}>
-        <form id={css.form} onSubmit={sendMessage}>
-          <input
-            id={css.input}
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type your message here..."
+        <div id={css.inputField}>
+          <form id={css.form} onSubmit={sendMessage}>
+            <input
+              id={css.input}
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Type your message here..."
+            />
+          </form>
+          <img
+            id={css.sendIcon}
+            src={sendIcon}
+            alt="send"
+            onClick={sendMessage}
           />
-        </form>
-        <img
-          id={css.sendIcon}
-          src={sendIcon}
-          alt="send"
-          onClick={sendMessage}
-        />
-      </div>
-    </div >
+        </div>
+      </div >
+    </div>
   );
 };
 
