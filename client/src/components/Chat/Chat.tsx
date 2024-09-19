@@ -47,37 +47,38 @@ const Chat = () => {
 
   return (
     <div id={css.container}>
-      <div id={css.header}>
-        <h1>Chat</h1>
-        <span>Welcome, {userName}</span>
-      </div>
-
-      {messages.length > 0 ? (
-        <div id={css.messages}>
-          {messages.map((msg, index) => (
-            msg.author === userName ? (
-              <div key={index} className={css.ownMessage}>
-                <div className={css.ownMsgHeader}>
-                  <span>{msg.message}</span>
-                  <span className={css.date}>{transformDate(msg.createdAt)}</span>
-                </div>
-              </div>
-            ) : (
-              <div key={index} className={css.message}>
-                <div className={css.msgHeader}>
-                  {msg.author}
-                  <div className={css.date}>{transformDate(msg.createdAt)}</div>
-                </div>
-                <p>{msg.message}</p>
-              </div>
-            )
-          ))}
-          <div ref={messagesEndRef} />
+      <div>
+        <div id={css.header}>
+          <h1>Chat</h1>
+          <span>Welcome, {userName}</span>
         </div>
-      ) : (
-        <div className={css.noMsg}>There is no any messages yet.</div>
-      )
-      }
+
+        {messages.length > 0 ? (
+          <div id={css.messages}>
+            {messages.map((msg, index) => (
+              msg.author === userName ? (
+                <div key={index} className={css.ownMessage}>
+                  <div className={css.ownMsgHeader}>
+                    <span>{msg.message}</span>
+                    <span className={css.date}>{transformDate(msg.createdAt)}</span>
+                  </div>
+                </div>
+              ) : (
+                <div key={index} className={css.message}>
+                  <div className={css.msgHeader}>
+                    {msg.author}
+                    <div className={css.date}>{transformDate(msg.createdAt)}</div>
+                  </div>
+                  <p>{msg.message}</p>
+                </div>
+              )
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+        ) : (
+          <div className={css.noMsg}>There is no any messages yet.</div>
+        )}
+      </div>
 
       <div id={css.inputField}>
         <form id={css.form} onSubmit={sendMessage}>

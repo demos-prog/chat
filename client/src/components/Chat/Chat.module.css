@@ -6,6 +6,12 @@
 }
 
 #container {
+  background-image: url('../../assets/bg.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   max-width: 1200px;
   margin: 0 auto;
   min-height: 100lvh;
@@ -29,7 +35,6 @@
 
 #messages {
   border-radius: 5px;
-  border: 1px solid var(--sky-blue);
   padding: 10px;
   max-height: calc(100dvh - 180px);
   overflow-y: scroll;
@@ -89,6 +94,7 @@
 }
 
 .noMsg {
+  text-align: center;
   margin: 20px 0;
 }
 
@@ -131,4 +137,16 @@
   height: 30px;
   cursor: pointer;
   filter: brightness(0) saturate(100%) invert(50%) sepia(100%) saturate(200%) hue-rotate(200deg) brightness(90%);
+}
+
+@media (max-width: 800px) {
+
+  .message,
+  .ownMessage {
+    max-width: 95%;
+  }
+
+  .ownMessage {
+    margin-left: 5%;
+  }
 }
